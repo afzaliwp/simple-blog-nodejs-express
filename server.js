@@ -1,3 +1,4 @@
 require('dotenv').config();
-const startApplication = require('./app');
+require('module-alias/register');
+const startApplication = require('@app');
 startApplication();
