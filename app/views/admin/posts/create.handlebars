@@ -1,0 +1,72 @@
+            <div class="row justify-content-between align-items-center mb-10">
+
+                <!-- Page Heading Start -->
+                <div class="col-12 col-lg-auto mb-20">
+                    <div class="page-heading">
+                        <h3 class="title">مطالب <span>/ مطلب جدید</span></h3>
+                    </div>
+                </div>
+                <!-- Page Heading End -->
+            </div>
+                        <div class="col-12 mb-30">
+                <div class="box">
+                    <div class="box-body">
+                        <form action="/admin/posts/store" method="post" class="form-horizontal w-100">
+                            <div class="col-12 mb-30">
+                                <label for="title">عنوان مطلب</label>
+                                <input id="title" name="title" type="text" class="form-control" placeholder="عنوان مطلب">
+                            </div>
+                            <div class="col-12 mb-30">
+                                <label for="title">نامک مطلب</label>
+                                <input id="slug" name="slug" type="text" class="form-control" placeholder="نامک مطلب">
+                            </div>
+                            <div class="col-12 mb-30">
+                                <label for="title">محتوای مطلب</label>
+                                <textarea class="form-control summernote" id="content" name="content" placeholder="محتوای مطلب"></textarea>
+                            </div>
+
+                            <div class="col-12 mb-30">
+                                <label for="title">نویسنده مطلب</label>
+                                <select id="author_id" name="author_id" class="form-control">
+                                    {{#each authors}}
+                                    <option value="{{this.ID}}">{{this.full_name}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+
+                            <div class="col-12 mb-30">
+                                <h5>وضعیت مطلب</h5>
+                                <div class="d-flex flex-column">
+                                    <p>
+                                        <label class="adomx-radio-2 info">
+                                            <input type="radio" name="status" value="1" checked>
+                                        <i class="icon"></i>
+                                        منتشر شده
+                                    </label>
+                                    </p>
+                                    <p>
+                                        <label class="adomx-radio-2 info">
+                                            <input type="radio" name="status" value="2">
+                                            <i class="icon"></i>
+                                            پیش‌نویس
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <label class="adomx-radio-2 info">
+                                            <input type="radio" name="status" value="3">
+                                            <i class="icon"></i>
+                                            در حال بازبینی
+                                        </label>
+                                    </p>
+                                    <p>
+                                        <button class="button button-icon-right button-primary" type="submit" name="submit">
+                                            <span>ذخیره مطلب</span>
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>

@@ -15,7 +15,7 @@
                 <div class="box">
                     <div class="box-head">
                         <h4 class="title">
-                            <a class="button button-icon-right button-primary text-light" href="new-post.html">
+                            <a class="button button-icon-right button-primary text-light" href="./posts/create">
                                 <span><i class="zmdi zmdi-file-plus"></i>مطلب جدید</span>
                             </a>
                         </h4>
@@ -34,12 +34,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   {{#each allPosts}}
+                                   {{#each posts}}
                                     <tr>
                                         <td>{{this.ID}}</td>
                                         <td><a href="#">{{this.title}}</a></td>
-                                        <td>{{this.author_id}}</td>
-                                        <td>{{this.created_at}}</td>
+                                        <td>{{this.full_name}}</td>
+                                        <td>{{this.created_at_persian}}</td>
                                         <td><span class="badge badge-danger">{{this.views}}</span></td>
                                         <td>
                                             <div class="table-action-buttons">

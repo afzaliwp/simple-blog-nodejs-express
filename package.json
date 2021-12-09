@@ -5,7 +5,8 @@
         "@database": "database",
         "@controllers": "app/controllers",
         "@models": "app/models",
-        "@routes": "app/routes"
+        "@routes": "app/routes",
+        "@services": "app/services"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
@@ -13,6 +14,7 @@
         "express": "^4.17.1",
         "express-handlebars": "^6.0.2",
         "express-session": "^1.17.2",
+        "jalali-moment": "^3.3.10",
         "module-alias": "^2.2.2",
         "mysql2": "^2.3.3",
         "path": "^0.12.7"
