@@ -1,6 +1,15 @@
 const express = require('express');
+const session = require('express-session');
+
 const app = express();
 require('./bootstrap')(app);
+app.use(session({
+    saveUninitialized: false,
+    secret: 'fs984uruf09pu4r4fk345pf',
+    resave: false,
+    name: 'my-simple-blog-session'
+}));
+
 require('@routes')(app);
 
 module.exports = () => {
