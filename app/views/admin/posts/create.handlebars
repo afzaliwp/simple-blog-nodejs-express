@@ -10,6 +10,13 @@
             </div>
                         <div class="col-12 mb-30">
                 <div class="box">
+                    {{#if hasError}}
+                    <div class="errors">
+                        {{#each errors}}
+                        <p>{{this}}</p>
+                        {{/each}}
+                    </div>
+                    {{/if}}
                     <div class="box-body">
                         <form action="/admin/posts/store" method="post" class="form-horizontal w-100">
                             <div class="col-12 mb-30">

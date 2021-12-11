@@ -6,7 +6,8 @@
         "@controllers": "app/controllers",
         "@models": "app/models",
         "@routes": "app/routes",
-        "@services": "app/services"
+        "@services": "app/services",
+        "@validators": "app/validators"
     },
     "dependencies": {
         "body-parser": "^1.19.0",
