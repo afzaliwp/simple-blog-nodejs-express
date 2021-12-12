@@ -5,7 +5,7 @@ const app = express();
 require('./bootstrap')(app);
 app.use(session({
     saveUninitialized: false,
-    secret: 'fs984uruf09pu4r4fk345pf',
+    secret: 'fs984urf09pu4r4fk345pf',
     resave: false,
     name: 'my-simple-blog-session'
 }));

@@ -13,6 +13,25 @@
             <!-- Page Headings End -->
             <div class="col-md-12 mb-30">
                 <div class="box">
+                    
+                    {{#each errors}}
+                        {{#if this}}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>{{this}}</strong>
+                            <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+
+                    {{#each success}}
+                        {{#if this}}
+                        <div class="alert alert-success" role="alert">
+                            <strong>{{this}}</strong>
+                            <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
+                        </div>
+                        {{/if}}
+                    {{/each}}
+                    
                     <div class="box-head">
                         <h4 class="title">
                             <a class="button button-icon-right button-primary text-light" href="./posts/create">
@@ -43,8 +62,8 @@
                                         <td><span class="badge badge-danger">{{this.views}}</span></td>
                                         <td>
                                             <div class="table-action-buttons">
-                                                <a class="edit button button-box button-xs button-info" href="#"><i class="zmdi zmdi-edit"></i></a>
-                                                <a class="delete button button-box button-xs button-danger" href="#"><i class="zmdi zmdi-delete"></i></a>
+                                                <a class="edit button button-box button-xs button-info" href="/admin/posts/edit/{{this.ID}}"><i class="zmdi zmdi-edit"></i></a>
+                                                <a class="delete button button-box button-xs button-danger" href="/admin/posts/remove/{{this.ID}}""><i class="zmdi zmdi-delete"></i></a>
                                             </div>
                                         </td>
                                     </tr>

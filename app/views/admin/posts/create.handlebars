@@ -10,8 +10,9 @@
             </div>
                         <div class="col-12 mb-30">
                 <div class="box">
-                    {{#if hasError}}
-                    <div class="errors">
+                    <div class="box-body">
+                        {{#if hasError}}
+                    <div class="errors mb-30">
                         {{#each errors}}
                         <div class="alert alert-danger" role="alert">
                                 <strong>{{this}}</strong>
@@ -20,7 +21,6 @@
                         {{/each}}
                     </div>
                     {{/if}}
-                    <div class="box-body">
                         <form action="/admin/posts/store" method="post" class="form-horizontal w-100">
                             <div class="col-12 mb-30">
                                 <label for="title">عنوان مطلب</label>

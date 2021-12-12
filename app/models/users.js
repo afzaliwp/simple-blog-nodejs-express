@@ -5,6 +5,5 @@ exports.getAllUsersData = async(columns = []) => {
     SELECT ${sqlColumns}
     FROM users
     `);
-    console.log(sqlColumns);
     return result;
 }
