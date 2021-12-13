@@ -251,7 +251,6 @@ img {
     display: none;
 }
 
-
 .main-wrapper {
     float: left;
     width: 100%;
@@ -3560,7 +3559,6 @@ body.skin-dark .form-control:focus {
     background-color: #202334;
 }
 
-
 body.skin-dark .form-control[disabled] {
     border-color: transparent;
     background-color: #333853;
@@ -3613,20 +3611,6 @@ body.skin-dark .cus-radio.light .icon {
 
 body.skin-dark .cus-radio.light .icon::before {
     background-color: #202334;
-}
-
-
-/*----------------------------------------*/
-
-
-/*  22. RTL Version CSS
-/*----------------------------------------*/
-
-[dir="rtl"] {
-    /*-- Side Header Menu --*/
-    /*-- Sub Menu --*/
-    /*Chat*/
-    /*Chat Submission*/
 }
 
 [dir="rtl"] .page-heading h3 span {
@@ -3949,10 +3933,6 @@ only screen and (max-width: 767px) {
 
 [dir="rtl"] .adomx-switch .lever::before {
     left: 20px;
-}
-
-[dir="rtl"] .top-report {
-    /*-- Icon --*/
 }
 
 [dir="rtl"] .top-report .icon {

@@ -115,17 +115,13 @@
     })
 
     /*--
-        Tooltip, Popover & Tippy Tooltip
+        Tooltip, Popover
     -----------------------------------*/
     /*Bootstrap Tooltip*/
     $('[data-toggle="tooltip"]').tooltip();
     /*Bootstrap Popover*/
     $('[data-toggle="popover"]').popover();
-    /*Tippy Tooltip*/
-    tippy('.tippy, [data-tippy-content], [data-tooltip]', {
-        flipOnUpdate: true,
-        boundary: 'window',
-    });
+
 
     /*-- 
         Selectable Table
