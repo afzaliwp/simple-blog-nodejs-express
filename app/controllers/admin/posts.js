@@ -85,7 +85,7 @@ exports.store = async(req, res) => {
 }
 
 exports.remove = async(req, res) => {
-    const redirect = new Redirect;
+    const sessionModel = new sessionHandler;
     const postID = req.params.postID;
     const success = await postsModel.remove(postID);
 
