@@ -1,4 +1,4 @@
-class Redirect {
+class SessionHandler {
     saveSessionAndRedirect(request, response, redirectPath) {
         new Promise((resolve, reject) => {
             request.session.save((err) => {
@@ -9,6 +9,12 @@ class Redirect {
             });
         });
     }
+
+    returnSessionAndDelete(request, sessionName) {
+        const sessionValue = request.session[sessionName];
+        delete request.session[sessionName];
+        return sessionValue;
+    }
 }
 
-module.exports = Redirect;
+module.exports = SessionHandler;

@@ -24,15 +24,25 @@
                         <form action="/admin/posts/store" method="post" class="form-horizontal w-100">
                             <div class="col-12 mb-30">
                                 <label for="title">عنوان مطلب</label>
-                                <input id="title" name="title" type="text" class="form-control" placeholder="عنوان مطلب">
+                                <input id="title" name="title" type="text" 
+                                class="form-control {{#if retrievedData}}{{#unless retrievedData.title}}danger{{/unless}}{{/if}}"
+                                placeholder="عنوان مطلب"
+                                value="{{retrievedData.title}}"
+                                >
                             </div>
                             <div class="col-12 mb-30">
                                 <label for="title">نامک مطلب</label>
-                                <input id="slug" name="slug" type="text" class="form-control" placeholder="نامک مطلب">
+                                <input id="slug" name="slug" type="text"
+                                class="form-control {{#if retrievedData}}{{#unless retrievedData.slug}}danger{{/unless}}{{/if}}"
+                                placeholder="نامک مطلب"
+                                value="{{retrievedData.slug}}"
+                                >
                             </div>
                             <div class="col-12 mb-30">
                                 <label for="title">محتوای مطلب</label>
-                                <textarea class="form-control summernote" id="content" name="content" placeholder="محتوای مطلب"></textarea>
+                                <textarea class="form-control summernote {{#if retrievedData}}{{#unless retrievedData.content}}danger{{/unless}}{{/if}}"
+                                id="content" name="content" placeholder="محتوای مطلب"
+                                >{{retrievedData.content}}</textarea>
                             </div>
 
                             <div class="col-12 mb-30">

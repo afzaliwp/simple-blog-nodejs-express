@@ -2,12 +2,14 @@ const postsModel = require('@models/posts');
 const usersModel = require('@models/users');
 const dateService = require('@services/dateService');
 const PostValidator = require('@validators/post');
-const Redirect = require('@models/promiseRedirect');
+const sessionHandler = require('@models/sessionHandler');
+const session = require('express-session');
 
 exports.index = async(req, res) => {
     let errors = [];
     let success = [];
     const posts = await postsModel.allPosts();
+    const sessionModel = new sessionHandler;
 
     //Remove post messages injected using session
     if (req.session.postRemoveError) {
@@ -40,15 +42,20 @@ exports.index = async(req, res) => {
 }
 
 exports.create = async(req, res) => {
-    const errors = req.session.createPostErrors;
-    const hasError = req.session.createPostHasError;
+    const sessionModel = new sessionHandler;
+
+    const errors = sessionModel.returnSessionAndDelete(req, 'createPostErrors');
+    const hasError = sessionModel.returnSessionAndDelete(req, 'createPostHasError');
+    const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData') || null;
+
     const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
-    res.render('admin/posts/create', { layout: 'admin', authors, errors, hasError });
+
+    res.render('admin/posts/create', { layout: 'admin', authors, errors, hasError, retrievedData });
 }
 
 exports.store = async(req, res) => {
     const validator = new PostValidator;
-    const redirect = new Redirect;
+    const sessionModel = new sessionHandler;
 
     const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
 
@@ -64,14 +71,15 @@ exports.store = async(req, res) => {
     if (errors.length > 0) {
         req.session.createPostErrors = errors;
         req.session.createPostHasError = true;
+        req.session.retrievedData = postData;
 
-        return redirect.saveSessionAndRedirect(req, res, '/admin/posts/create');
+        return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts/create');
     } else {
         const insertId = await postsModel.create(postData);
         if (insertId) {
             req.session.postCreated = true;
 
-            return redirect.saveSessionAndRedirect(req, res, '/admin/posts');
+            return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
         }
     }
 }
@@ -90,5 +98,5 @@ exports.remove = async(req, res) => {
         req.session.postRemoveError = true;
     }
 
-    return redirect.saveSessionAndRedirect(req, res, '/admin/posts');
+    return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
 }
