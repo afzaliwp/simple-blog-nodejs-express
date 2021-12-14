@@ -4,29 +4,37 @@ const dateService = require('@services/dateService');
 const PostValidator = require('@validators/post');
 const sessionHandler = require('@models/sessionHandler');
 const session = require('express-session');
+const sessionModel = new sessionHandler;
 
 exports.index = async(req, res) => {
     let errors = [];
     let success = [];
     const posts = await postsModel.allPosts();
-    const sessionModel = new sessionHandler;
 
     //Remove post messages injected using session
     if (req.session.postRemoveError) {
         const validator = new PostValidator;
         errors = validator.remove(req);
-        delete req.session['postRemoveError'];
+        delete req.session.postRemoveError;
     }
+
     if (req.session.postRemoveSuccess) {
         const validator = new PostValidator;
         success = validator.remove(req);
-        delete req.session['postRemoveSuccess'];
+        delete req.session.postRemoveSuccess;
     }
-    console.log(req.session);
+
     if (req.session.postCreated) {
         const validator = new PostValidator;
         success = validator.create(req.session);
-        delete req.session['postCreated'];
+        delete req.session.postCreated;
+    }
+
+    const updatePostStatus = sessionModel.returnSessionAndDelete(req, 'updatePostStatus');
+    if (updatePostStatus) {
+        success.push(sessionModel.returnSessionAndDelete(req, 'updatePostMessage'));
+    } else {
+        errors.push(sessionModel.returnSessionAndDelete(req, 'updatePostMessage'));
     }
 
     const localizedData = posts.map((post) => {
@@ -42,8 +50,6 @@ exports.index = async(req, res) => {
 }
 
 exports.create = async(req, res) => {
-    const sessionModel = new sessionHandler;
-
     const errors = sessionModel.returnSessionAndDelete(req, 'createPostErrors');
     const hasError = sessionModel.returnSessionAndDelete(req, 'createPostHasError');
     const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData') || null;
@@ -55,8 +61,6 @@ exports.create = async(req, res) => {
 
 exports.store = async(req, res) => {
     const validator = new PostValidator;
-    const sessionModel = new sessionHandler;
-
     const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
 
     const postData = {
@@ -85,7 +89,6 @@ exports.store = async(req, res) => {
 }
 
 exports.remove = async(req, res) => {
-    const sessionModel = new sessionHandler;
     const postID = req.params.postID;
     const success = await postsModel.remove(postID);
 
@@ -96,6 +99,37 @@ exports.remove = async(req, res) => {
     if (success === 'failed') {
         req.session.postRemoveSuccess = false;
         req.session.postRemoveError = true;
+    }
+
+    return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
+}
+
+exports.edit = async(req, res) => {
+    const postID = req.params.postID;
+    console.log(postID);
+    const postData = await postsModel.getPost(postID);
+    console.log(postData);
+    const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
+
+    res.render('admin/posts/edit', { layout: 'admin', authors, postData });
+}
+exports.update = async(req, res) => {
+    const postID = req.params.postID;
+    const postData = {
+        title: req.body.title,
+        slug: req.body.slug,
+        content: req.body.content,
+        author_id: req.body.author_id,
+        status: req.body.status,
+    }
+
+    const updateResult = postsModel.update(postID, postData);
+    if (updateResult) {
+        req.session.updatePostMessage = 'مطلب مورد نظر با موفقیت ویرایش شد.';
+        req.session.updatePostStatus = true;
+    } else {
+        req.session.updatePostMessage = 'خطایی رخ داده است. مطلب مورد نظر ویرایش نشد.';
+        req.session.updatePostStatus = false;
     }
 
     return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
