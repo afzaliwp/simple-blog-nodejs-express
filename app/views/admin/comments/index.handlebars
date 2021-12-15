@@ -1,0 +1,61 @@
+            <!-- Page Headings Start -->
+            <div class="row justify-content-between align-items-center mb-10">
+
+                <!-- Page Heading Start -->
+                <div class="col-12 col-lg-auto mb-20">
+                    <div class="page-heading">
+                        <h3 class="title">دیدگاه ها <span>/ همه دیدگاه ها</span></h3>
+                    </div>
+                </div>
+                <!-- Page Heading End -->
+
+            </div>
+            <!-- Page Headings End -->
+            <div class="col-md-12 mb-30">
+                <div class="box">
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover vertical-middle">
+                                <thead>
+                                    <tr>
+                                        <th>شماره دیدگاه</th>
+                                        <th>نویسنده</th>
+                                        <th>دیدگاه</th>
+                                        <th>در پاسخ به</th>
+                                        <th>تاریخ</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each allComments}}
+                                    <tr>
+                                        <td>{{this.ID}}</td>
+                                        <td>
+                                            <img style="border-radius: 100%; margin: 5px;" src="{{this.userAvatar}}" alt="avatar" class="img-fluid">
+
+                                            {{this.name}}
+                                            </td>
+                                        <td>
+                                            <div style=" word-wrap: break-word; width:200px; height:auto">
+                                                {{this.content}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="../blog/{{this.slug}}">{{this.title}}</a>
+                                        </td>
+                                        <td>{{this.persian_created_at}}</td>
+                                        <td>
+                                            <div class="table-action-buttons">
+                                                <a class="edit button button-box button-xs button-success" href="#" title="تایید"><i class="zmdi zmdi-check"></i></a>
+                                                <a class="edit button button-box button-xs button-warning" href="#" title="رد"><i class="zmdi zmdi-close"></i></a>
+                                                <a class="delete button button-box button-xs button-danger" href="#" title="حذف"><i class="zmdi zmdi-delete"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
