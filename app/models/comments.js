@@ -7,6 +7,7 @@ exports.getAllComments = async() => {
     FROM comments c
     JOIN posts p
     ON c.post_id = p.ID
+    ORDER BY created_at DESC
     `);
     const localizedDate = result.map((comment) => {
         comment.persian_created_at = dateService.toPersianDate(comment.created_at);

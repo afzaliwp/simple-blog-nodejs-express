@@ -49,7 +49,9 @@
                                 <label for="title">نویسنده مطلب</label>
                                 <select id="author_id" name="author_id" class="form-control">
                                     {{#each authors}}
-                                    <option value="{{this.ID}}">{{this.full_name}}</option>
+                                    <option value="{{this.ID}}"
+                                    {{#isPostAuthor this.ID}}selected{{/isPostAuthor}}
+                                    >{{this.full_name}}</option>
                                     {{/each}}
                                 </select>
                             </div>
@@ -59,21 +61,24 @@
                                 <div class="d-flex flex-column">
                                     <p>
                                         <label class="adomx-radio-2 info">
-                                            <input type="radio" name="status" value="1" checked>
+                                            <input type="radio" name="status" value="1" 
+                                            {{#checkPostStatus 1}}checked{{/checkPostStatus}}>
                                         <i class="icon"></i>
                                         منتشر شده
                                     </label>
                                     </p>
                                     <p>
                                         <label class="adomx-radio-2 info">
-                                            <input type="radio" name="status" value="2">
+                                            <input type="radio" name="status" value="2"
+                                            {{#checkPostStatus 2}}checked{{/checkPostStatus}}>
                                             <i class="icon"></i>
                                             پیش‌نویس
                                         </label>
                                     </p>
                                     <p>
                                         <label class="adomx-radio-2 info">
-                                            <input type="radio" name="status" value="3">
+                                            <input type="radio" name="status" value="3"
+                                            {{#checkPostStatus 3}}checked{{/checkPostStatus}}>
                                             <i class="icon"></i>
                                             در حال بازبینی
                                         </label>

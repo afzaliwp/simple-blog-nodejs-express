@@ -27,7 +27,6 @@ exports.create = async(postData) => {
 
 exports.remove = async(postID) => {
     const result = await db.query(`DELETE FROM posts WHERE ID = ?`, [postID]);
-    console.log(result);
     if (result[0].affectedRows > 0) {
         return 'success';
     }

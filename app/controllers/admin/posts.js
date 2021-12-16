@@ -106,12 +106,22 @@ exports.remove = async(req, res) => {
 
 exports.edit = async(req, res) => {
     const postID = req.params.postID;
-    console.log(postID);
     const postData = await postsModel.getPost(postID);
-    console.log(postData);
     const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
 
-    res.render('admin/posts/edit', { layout: 'admin', authors, postData });
+    res.render('admin/posts/edit', {
+        layout: 'admin',
+        authors,
+        postData,
+        helpers: {
+            isPostAuthor: function(current, options) {
+                return current === postData.author_id ? options.fn(this) : options.inverse(this);
+            },
+            checkPostStatus: function(current, options) {
+                return current === postData.status ? options.fn(this) : options.inverse(this);
+            }
+        }
+    });
 }
 exports.update = async(req, res) => {
     const postID = req.params.postID;
