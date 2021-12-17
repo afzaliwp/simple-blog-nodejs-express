@@ -17,3 +17,16 @@ exports.getAllComments = async() => {
 
     return localizedDate;
 }
+
+exports.getLatestComments = async(numberComments = 3) => {
+    const [result] = await db.query(`
+    SELECT c.*, p.title, p.slug
+    FROM comments c
+    JOIN posts p
+    ON c.post_id = p.ID
+    ORDER BY created_at DESC
+    LIMIT ${numberComments}
+    `);
+
+    return result;
+}

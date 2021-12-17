@@ -10,7 +10,7 @@ exports.index = async(req, res) => {
                     return options.fn({ class: 'warning', icon: 'zmdi zmdi-eye', text: 'در انتظار بازبینی' });
                 }
                 if (status == 1) {
-                    return options.fn({ class: 'success', icon: 'zmdi zmdi-check', text: 'تایید' });
+                    return options.fn({ class: 'success', icon: 'zmdi zmdi-check', text: 'تایید شده' });
                 }
                 if (status == 2) {
                     return options.fn({ class: 'danger', icon: 'zmdi zmdi-close', text: 'رد شده' });

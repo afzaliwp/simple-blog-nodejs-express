@@ -92,27 +92,17 @@
                             <div class="box">
                                 <div class="box-body m-0 p-0">
                                     <ul class="list-group m-0 p-0">
+                                        {{#each latestComments}}
                                         <li class="list-group-item mb-3">
                                             <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">محمد افضلی</h5>
-                                                <small>3 روز قبل</small>
+                                                <h5 class="mb-1">{{this.name}}</h5>
+                                                <small>{{this.relativeTime}}</small>
                                             </div>
-                                            <p class="mb-1">لورم ایپسوم متن ساخت چاپ و با استفاده از طراحان گرافیک ان گرافیک است.</small>
+                                            <p class="mb-1">
+                                                {{this.content}}
+                                            </small>
                                         </li>
-                                        <li class="list-group-item mb-3">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">محمد افضلی</h5>
-                                                <small>3 روز قبل</small>
-                                            </div>
-                                            <p class="mb-1">لورم ایپسوم متن ساخت چاپ و با استفاده از طراحان گرافیک ان گرافیک است.</small>
-                                        </li>
-                                        <li class="list-group-item mb-3">
-                                            <div class="d-flex w-100 justify-content-between">
-                                                <h5 class="mb-1">محمد افضلی</h5>
-                                                <small>3 روز قبل</small>
-                                            </div>
-                                            <p class="mb-1">لورم ایپسوم متن ساخت چاپ و با استفاده از طراحان گرافیک ان گرافیک است.</small>
-                                        </li>
+                                        {{/each}}
                                     </ul>
                                 </div>
                             </div>
