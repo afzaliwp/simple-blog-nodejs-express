@@ -37,6 +37,12 @@
                                             </td>
                                         <td>
                                             <div style=" word-wrap: break-word; width:200px; height:auto">
+                                                {{#checkStatus this.status}}
+                                                <a class="edit button button-box button-xs button-{{this.class}}"
+                                                 href="#" title="{{this.text}}">
+                                                 <i class="{{this.icon}}"></i>
+                                                 </a>
+                                                 {{/checkStatus}}
                                                 {{this.content}}
                                             </div>
                                         </td>
