@@ -1,6 +1,8 @@
 const db = require('@database/mysql');
 const dateService = require('@services/dateService');
 const userService = require('@services/userService');
+const commentStatus = require('@models/comments/commentStatus');
+
 exports.getAllComments = async() => {
     const [result] = await db.query(`
     SELECT c.*, p.title, p.slug
@@ -29,4 +31,14 @@ exports.getLatestComments = async(numberComments = 3) => {
     `);
 
     return result;
+}
+
+exports.changeCommentStatus = async(commentID, status) => {
+    [result] = await db.query(`UPDATE comments set status=? WHERE ID=? LIMIT 1`, [commentStatus[status], commentID]);
+    return result.affectedRows > 0;
+}
+
+exports.deleteComment = async(commentID) => {
+    [result] = await db.query(`DELETE FROM comments WHERE ID=?`, commentID);
+    return result.affectedRows > 0;
 }
