@@ -11,8 +11,6 @@ exports.index = async(req, res) => {
         commentStatusSuccess = changeCommentStatus.success ? 'success' : 'danger';
     }
 
-    console.log(commentStatusMessage, commentStatusSuccess);
-
     res.render('admin/comments/index', {
         layout: 'admin',
         allComments,
