@@ -28,3 +28,12 @@ exports.updateUser = async(userID, userData) => {
     const result = await db.query(`UPDATE users SET ? WHERE ID = ? LIMIT 1`, [userData, userID]);
     return result[0].affectedRows > 0;
 }
+
+exports.createUser = async(userData) => {
+    [result] = await db.query(`
+    INSERT INTO users
+    SET ?
+    `, [userData]);
+
+    return result.insertId;
+}

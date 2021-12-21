@@ -1,12 +1,15 @@
 const usersModel = require('@models/users');
 const userRoles = require('@models/users/userRoles');
+const userValidator = require('@validators/user');
 const dateService = require('@services/dateService');
 const sessionHandler = require('@models/sessionHandler');
 const session = require('express-session');
+const hashService = require('@services/hashService');
 const sessionModel = new sessionHandler;
 
 exports.index = async(req, res) => {
     let updateSuccess;
+    let createUserSuccess;
     const allUsers = await usersModel.getAllUsersData();
     const presentedUsersData = allUsers.map((user) => {
         user.persian_created_at = dateService.toPersianDate(user.created_at);
@@ -21,7 +24,11 @@ exports.index = async(req, res) => {
     if (req.session.userUpdateSuccess) {
         updateSuccess = sessionModel.returnSessionAndDelete(req, 'userUpdateSuccess');
     }
-    res.render('admin/users/index', { layout: 'admin', allUsers: presentedUsersData, deleteUserResult, updateSuccess });
+
+    if (req.session.createUserSuccess) {
+        createUserSuccess = sessionModel.returnSessionAndDelete(req, 'createUserSuccess');
+    }
+    res.render('admin/users/index', { layout: 'admin', allUsers: presentedUsersData, deleteUserResult, updateSuccess, createUserSuccess });
 }
 
 exports.remove = async(req, res) => {
@@ -95,4 +102,51 @@ exports.update = (req, res) => {
     sessionModel.saveSessionAndRedirect(req, res, `/admin/users`);
     return true;
 
+}
+
+exports.create = async(req, res) => {
+    const errors = sessionModel.returnSessionAndDelete(req, 'createUserErrors');
+    const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData');
+
+    console.log(req.body);
+    res.render('admin/users/create', {
+        layout: 'admin',
+        retrievedData,
+        errors,
+        helpers: {
+            roleHasSet: function(data, options) {
+                if (retrievedData) {
+                    return data == retrievedData.role ? options.fn(this) : options.inverse(this);
+                }
+            }
+
+        }
+    });
+}
+
+exports.store = async(req, res) => {
+    const postData = {
+        full_name: req.body.full_name,
+        email: req.body.email,
+        password: hashService.hashPassword(req.body.password),
+        role: req.body.role,
+    };
+
+    const validationResult = await userValidator.create(req.body);
+
+    if (validationResult.errors) {
+        req.session.createUserErrors = validationResult.errors;
+        req.session.retrievedData = req.body;
+        return sessionModel.saveSessionAndRedirect(req, res, '/admin/users/create');
+    }
+
+    const insertId = await usersModel.createUser(postData);
+    if (insertId > 0) {
+        req.session.createUserSuccess = validationResult.success;
+        return sessionModel.saveSessionAndRedirect(req, res, '/admin/users');
+    } else {
+        req.session.createUserErrors = userValidator.dbError();
+        req.session.retrievedData = req.body;
+        return sessionModel.saveSessionAndRedirect(req, res, '/admin/users/create');
+    }
 }

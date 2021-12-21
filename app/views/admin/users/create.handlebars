@@ -3,7 +3,7 @@
                 <!-- Page Heading Start -->
                 <div class="col-12 col-lg-auto mb-20">
                     <div class="page-heading">
-                        <h3 class="title">کاربر ها <span>/ ویرایش کاربر</span></h3>
+                        <h3 class="title">کاربر ها <span>/ کاربر جدید</span></h3>
                     </div>
                 </div>
                 <!-- Page Heading End -->
@@ -21,13 +21,13 @@
                         {{/each}}
                     </div>
                     {{/if}}
-                        <form action="/admin/users/update/{{userData.ID}}" method="post" class="form-horizontal w-100">
+                        <form action="/admin/users/store" method="post" class="form-horizontal w-100">
                             <div class="col-12 mb-30">
                                 <label for="full_name">نام کاربر</label>
                                 <input id="full_name" name="full_name" type="text" 
                                 class="form-control"
                                 placeholder="نام کاربر"
-                                value="{{userData.full_name}}"
+                                value="{{retrievedData.full_name}}"
                                 >
                             </div>
                             <div class="col-12 mb-30">
@@ -35,7 +35,14 @@
                                 <input id="email" name="email" type="email"
                                 class="form-control"
                                 placeholder="ایمیل کاربر"
-                                value="{{userData.email}}"
+                                value="{{retrievedData.email}}"
+                                >
+                            </div>
+                            <div class="col-12 mb-30">
+                                <label for="password">رمز کاربر</label>
+                                <input id="password" name="password" type="password"
+                                class="form-control"
+                                placeholder="رمز کاربر"
                                 >
                             </div>
 
@@ -44,8 +51,9 @@
                                 <div class="d-flex flex-column">
                                     <p>
                                         <label class="adomx-radio-2 info">
-                                            <input type="radio" name="role" value="1" 
-                                            {{#userHasRole 1}}checked{{/userHasRole}}>
+                                            <input type="radio" name="role" value="1"
+                                            {{#roleHasSet 1}}checked{{/roleHasSet}}
+                                            >
                                         <i class="icon"></i>
                                         مدیر سایت
                                     </label>
@@ -53,7 +61,8 @@
                                     <p>
                                         <label class="adomx-radio-2 info">
                                             <input type="radio" name="role" value="2"
-                                            {{#userHasRole 2}}checked{{/userHasRole}}>
+                                            {{#roleHasSet 2}}checked{{/roleHasSet}}
+                                            >
                                             <i class="icon"></i>
                                             نویسنده
                                         </label>
@@ -61,14 +70,15 @@
                                     <p>
                                         <label class="adomx-radio-2 info">
                                             <input type="radio" name="role" value="3"
-                                            {{#userHasRole 3}}checked{{/userHasRole}}>
+                                            {{#roleHasSet 3}}checked{{/roleHasSet}}
+                                            >
                                             <i class="icon"></i>
                                             کاربر
                                         </label>
                                     </p>
                                     <p>
                                         <button class="button button-icon-right button-primary" type="submit" name="submit">
-                                            <span>ذخیره اطلاعات</span>
+                                            <span>ایجاد کاربر</span>
                                         </button>
                                     </p>
                                 </div>

@@ -25,6 +25,12 @@
             <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
         </div>
     {{/if}}
+    {{#if createUserSuccess}} 
+        <div class="alert alert-success" role="alert">
+            <strong>{{createUserSuccess}}</strong>
+            <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
+        </div>
+    {{/if}}
     <div class="box-head">
        <h4 class="title">
          <a class="button button-icon-right button-primary text-light" href="./users/create">
