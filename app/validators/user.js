@@ -1,6 +1,5 @@
 const userRoles = require('@models/users/userRoles');
 const db = require('@database/mysql');
-const res = require('express/lib/response');
 class User {
     async create(data) {
         const success = 'کاربر با موفقیت ایجاد شد.';
