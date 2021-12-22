@@ -78,6 +78,10 @@ exports.update = (req, res) => {
         email: req.body.email
     };
 
+    if (req.body.password !== '') {
+        userData.password = hashService.hashPassword(req.body.password);
+    }
+
     if (userData.full_name === '') {
         errors.push('نام کاربر نمی تواند خالی باشد.');
     }
@@ -108,7 +112,6 @@ exports.create = async(req, res) => {
     const errors = sessionModel.returnSessionAndDelete(req, 'createUserErrors');
     const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData');
 
-    console.log(req.body);
     res.render('admin/users/create', {
         layout: 'admin',
         retrievedData,
