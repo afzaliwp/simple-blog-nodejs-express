@@ -1,0 +1,85 @@
+<!-- Page Headings Start -->
+<div class="row justify-content-between align-items-center mb-10">
+
+  <!-- Page Heading Start -->
+  <div class="col-12 col-lg-auto mb-20">
+    <div class="page-heading">
+      <h3 class="title">تنظیمات سایت</h3>
+    </div>
+  </div>
+  <!-- Page Heading End -->
+
+</div>
+<!-- Page Headings End -->
+<div class="col-12 mb-30">
+  <div class="box">
+    <div class="box-body">
+      <form action="/admin/settings" method="post" class="form-horizontal w-100">
+        <div class="d-flex flex-wrap">
+          <div class="col-12 col-lg-4">
+            <div class="col-12 mb-30">
+              <label for="title">عنوان سایت</label>
+              <input
+                id="title"
+                name="website_title"
+                type="text"
+                class="form-control"
+                placeholder="عنوان سایت"
+                value="{{allSettings.website_title}}"
+              />
+            </div>
+            <div class="col-12 mb-30">
+              <label for="description">توضیحات سایت</label>
+              <textarea
+                class="form-control"
+                id="description"
+                name="website_description"
+                placeholder="توضیحات سایت..."
+              >{{allSettings.website_description}}</textarea>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="col-12 mb-30">
+              <label for="post-per-page">تعداد محتوا در هر صفحه</label>
+              <input
+                id="post-per-page"
+                name="post_per_page"
+                type="number"
+                class="form-control"
+                placeholder="عدد وارد کنید"
+                value="{{allSettings.post_per_page}}"
+              />
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="col-12 mb-30">
+              <label class="adomx-checkbox info">
+                <input type="checkbox" 
+                {{#isChecked allSettings.enable_comments}}checked{{/isChecked}}
+                 name="enable_comments" />
+                <i class="icon"></i>
+                <span>کاربران میتوانند دیدگاه ثبت کنند.</span>
+              </label>
+            </div>
+            <div class="col-12 mb-30">
+              <label class="adomx-checkbox info">
+                <input type="checkbox" 
+                {{#isChecked allSettings.enable_register}}checked{{/isChecked}}
+                name="enable_register" />
+                <i class="icon"></i>
+                <span>همه میتوانند ثبت نام کنند.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <button
+          class="button button-icon-right button-primary"
+          type="submit"
+        >
+          <span>ذخیره</span>
+        </button>
+      </form>
+
+    </div>
+  </div>
+</div>

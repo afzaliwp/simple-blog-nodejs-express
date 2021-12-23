@@ -108,7 +108,6 @@ exports.create = async(req, res) => {
     const errors = sessionModel.returnSessionAndDelete(req, 'createUserErrors');
     const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData');
 
-    console.log(req.body);
     res.render('admin/users/create', {
         layout: 'admin',
         retrievedData,
