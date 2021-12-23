@@ -5,9 +5,12 @@ exports.getAllSettings = async() => {
     let data;
     for (setting of defaults) {
         data = await this.getSetting(setting.setting_name);
-        results[data.name] = data.value;
+        if (!data) {
+            results[setting.setting_name] = setting.setting_value
+        } else {
+            results[data.name] = data.value;
+        }
     }
-
     return results;
 }
 
@@ -35,10 +38,11 @@ exports.updateSetting = async(data) => {
 exports.updateSettings = async(data) => {
     const allResults = [];
     let result;
-    data.forEach(async(item) => {
+
+    for (item of data) {
         result = await this.updateSetting(item);
-        allResults.push(result);
-    });
+        allResults.push({ result });
+    }
 
     return allResults;
 }

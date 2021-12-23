@@ -7,10 +7,12 @@ const sessionModel = new sessionHandler;
 
 exports.index = async(req, res) => {
     const allSettings = await settingsModel.getAllSettings();
+    const messages = sessionModel.returnSessionAndDelete(req, 'updateSettings');
 
     res.render('admin/settings/index', {
         layout: 'admin',
         allSettings,
+        messages,
         helpers: {
             isChecked: function(value, options) {
                 return value == 1 ? options.fn(this) : options.inverse(this)
@@ -32,6 +34,20 @@ exports.update = async(req, res) => {
     });
 
     const results = await settingsModel.updateSettings(dataToSave);
+
+    req.session.updateSettings = {
+        success: false,
+        message: 'تنظیمات ذخیره نشد!'
+    }
+    for (result of results) {
+        if (result.result.affectedRows > 0) {
+            req.session.updateSettings = {
+                success: true,
+                message: 'تنظیمات ذخیره شد!'
+            }
+            break;
+        }
+    }
 
     sessionModel.saveSessionAndRedirect(req, res, '/admin/settings');
 }
