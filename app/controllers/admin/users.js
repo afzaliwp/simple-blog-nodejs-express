@@ -78,6 +78,10 @@ exports.update = (req, res) => {
         email: req.body.email
     };
 
+    if (req.body.password !== '') {
+        userData.password = hashService.hashPassword(req.body.password);
+    }
+
     if (userData.full_name === '') {
         errors.push('نام کاربر نمی تواند خالی باشد.');
     }
