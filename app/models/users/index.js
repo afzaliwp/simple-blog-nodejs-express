@@ -37,3 +37,13 @@ exports.createUser = async(userData) => {
 
     return result.insertId;
 }
+
+exports.findUserByEmail = async(email) => {
+    const [result] = await db.query(`
+    SELECT ID, password, role
+    FROM users
+    WHERE email = ?
+    LIMIT 1
+    `, [email]);
+    return result[0] ? result[0] : false;
+}

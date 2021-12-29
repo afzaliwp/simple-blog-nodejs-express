@@ -3,17 +3,31 @@
 </div>
 
 <div class="login-register-form">
+
+  {{#if errors}}
+    {{#each errors}}
+      <div class="alert alert-danger" role="alert">
+        <strong>{{this}}</strong>
+        <button class="close" data-dismiss="alert"><i
+            class="zmdi zmdi-close"
+          ></i></button>
+      </div>
+    {{/each}}
+  {{/if}}
+
   <form action="/auth/login" method="post">
     <div class="row">
       <div class="col-12 mb-20"><input
           class="form-control"
           type="text"
           placeholder="نام کاربری / ایمیل"
+          name="email"
         /></div>
       <div class="col-12 mb-20"><input
           class="form-control"
           type="password"
           placeholder="رمز عبور"
+          name="password"
         /></div>
       <div class="col-12 mb-20"><label
           for="remember"

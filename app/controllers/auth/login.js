@@ -1,12 +1,25 @@
+const authService = require('@services/authService');
 const sessionHandler = require('@models/sessionHandler');
 const session = require('express-session');
 const hashService = require('@services/hashService');
 const sessionModel = new sessionHandler;
 
 exports.showLogin = (req, res) => {
-    res.render('auth/login', { layout: 'auth' });
+    const errors = sessionModel.returnSessionAndDelete(req, 'errors');
+    res.render('auth/login', { layout: 'auth', errors });
 }
 
-exports.doLogin = (req, res) => {
-    res.send(req.body);
+exports.doLogin = async(req, res) => {
+    const isValidUser = await authService.login(req.body.email, req.body.password);
+    if (!isValidUser) {
+        req.session.errors = ['نام کاربری یا رمز عبور اشتباه است.'];
+        return sessionModel.saveSessionAndRedirect(req, res, '/auth/login');
+    }
+
+    if (isValidUser.role == 1 || isValidUser.role == 2) {
+        return res.redirect('/admin/dashboard');
+    }
+    if (isValidUser.role == 3) {
+        return res.redirect('/');
+    }
 }
