@@ -11,6 +11,7 @@ app.use(session({
 }));
 
 require('@routes')(app);
+require('@middlewares')(app);
 
 module.exports = () => {
     const port = process.env.APP_PORT;

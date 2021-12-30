@@ -7,7 +7,8 @@
         "@models": "app/models",
         "@routes": "app/routes",
         "@services": "app/services",
-        "@validators": "app/validators"
+        "@validators": "app/validators",
+        "@middlewares": "app/middlewares"
     },
     "dependencies": {
         "bcrypt": "^5.0.1",

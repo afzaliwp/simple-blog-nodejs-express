@@ -40,7 +40,7 @@ exports.createUser = async(userData) => {
 
 exports.findUserByEmail = async(email) => {
     const [result] = await db.query(`
-    SELECT ID, password, role
+    SELECT *
     FROM users
     WHERE email = ?
     LIMIT 1

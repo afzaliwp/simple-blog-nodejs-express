@@ -57,7 +57,11 @@
                 <td>{{this.ID}}</td>
                 <td>{{this.full_name}}</td>
                 <td>{{this.email}}</td>
-                <td>{{this.readableRole}}</td>
+                <td>
+                  {{#persianRole this.role}}
+                  {{this.persian}}
+                  {{/persianRole}}
+                </td>
                 <td>{{this.persian_created_at}}</td>
                 <td>
                     <a

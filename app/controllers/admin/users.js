@@ -13,7 +13,6 @@ exports.index = async(req, res) => {
     const allUsers = await usersModel.getAllUsersData();
     const presentedUsersData = allUsers.map((user) => {
         user.persian_created_at = dateService.toPersianDate(user.created_at);
-        user.readableRole = userRoles[user.role].persianRoleName;
         return user;
     });
 
@@ -28,7 +27,27 @@ exports.index = async(req, res) => {
     if (req.session.createUserSuccess) {
         createUserSuccess = sessionModel.returnSessionAndDelete(req, 'createUserSuccess');
     }
-    res.render('admin/users/index', { layout: 'admin', allUsers: presentedUsersData, deleteUserResult, updateSuccess, createUserSuccess });
+    res.render('admin/users/index', {
+        layout: 'admin',
+        allUsers: presentedUsersData,
+        deleteUserResult,
+        updateSuccess,
+        createUserSuccess,
+        helpers: {
+            persianRole: (role, options) => {
+                if (role == userRoles.ADMIN) {
+                    return options.fn({ persian: 'مدیر سایت' });
+                }
+                if (role == userRoles.AUTHOR) {
+                    return options.fn({ persian: 'نویسنده' });
+                }
+                if (role == userRoles.SUBSCRIBER) {
+                    return options.fn({ persian: 'کاربر' });
+                }
+                return options.inverse({ persian: 'نقش نامعتبر' });
+            }
+        }
+    });
 }
 
 exports.remove = async(req, res) => {

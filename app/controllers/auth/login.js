@@ -2,6 +2,7 @@ const authService = require('@services/authService');
 const sessionHandler = require('@models/sessionHandler');
 const session = require('express-session');
 const hashService = require('@services/hashService');
+const userRoles = require('@models/users/userRoles');
 const sessionModel = new sessionHandler;
 
 exports.showLogin = (req, res) => {
@@ -16,10 +17,11 @@ exports.doLogin = async(req, res) => {
         return sessionModel.saveSessionAndRedirect(req, res, '/auth/login');
     }
 
-    if (isValidUser.role == 1 || isValidUser.role == 2) {
+    req.session.user = isValidUser;
+    if (isValidUser.role == userRoles.ADMIN || isValidUser.role == userRoles.AUTHOR) {
         return res.redirect('/admin/dashboard');
     }
-    if (isValidUser.role == 3) {
+    if (isValidUser.role == userRoles.SUBSCRIBER) {
         return res.redirect('/');
     }
 }
