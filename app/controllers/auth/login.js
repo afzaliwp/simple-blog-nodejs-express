@@ -14,8 +14,8 @@ exports.doLogin = async(req, res) => {
         return res.redirect('/auth/login');
     }
 
-    req.session.user = isValidUser;
     if (isValidUser.role == userRoles.ADMIN || isValidUser.role == userRoles.AUTHOR) {
+        req.session.user = isValidUser;
         return res.redirect('/admin/dashboard');
     }
     if (isValidUser.role == userRoles.SUBSCRIBER) {
