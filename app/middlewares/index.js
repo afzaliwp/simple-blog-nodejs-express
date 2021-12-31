@@ -8,6 +8,11 @@ module.exports = app => {
             res.render(template, options);
         }
 
+        res.newRender = (template, options) => {
+            options = {...options, errors, success };
+            res.render(template, options);
+        }
+
         next();
     });
 }

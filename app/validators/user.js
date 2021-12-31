@@ -18,9 +18,8 @@ class User {
         if (data.password === '') {
             errors.push('رمز کاربر نمیتواند خالی باشد');
         }
-        if (data.role === '') {
-            errors.push('نقش کاربر نمیتواند خالی باشد');
-        } else if (!userRoles[data.role]) {
+
+        if (!(data.role in Object.values(userRoles))) {
             errors.push('نقش نامعتبر');
         }
 

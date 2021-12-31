@@ -14,12 +14,24 @@
 <div class="col-12 mb-30">
   <div class="box">
     <div class="box-body">
-      {{#if messages}}
+      {{#if errors}}
       <div class="errors mb-30">
-        <div class="alert alert-{{#if messages.success}}success{{/if}}{{#unless messages.success}}danger{{/unless}}" role="alert">
-          <strong>{{messages.message}}</strong>
+        {{#each errors}}
+        <div class="alert alert-danger" role="alert">
+          <strong>{{this}}</strong>
            <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
         </div>
+        {{/each}}
+      </div>
+      {{/if}}
+            {{#if success}}
+      <div class="success mb-30">
+        {{#each success}}
+        <div class="alert alert-success" role="alert">
+          <strong>{{this}}</strong>
+           <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
+        </div>
+        {{/each}}
       </div>
       {{/if}}
       <form action="/admin/settings" method="post" class="form-horizontal w-100">

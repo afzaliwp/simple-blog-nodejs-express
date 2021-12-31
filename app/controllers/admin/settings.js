@@ -1,18 +1,12 @@
 const settingsModel = require('@models/settings');
-const sessionHandler = require('@models/sessionHandler');
 const defaults = require('@models/settings/defaultSettings');
-
 const session = require('express-session');
-const sessionModel = new sessionHandler;
 
-exports.index = async(req, res) => {
+exports.index = async(req1, res) => {
     const allSettings = await settingsModel.getAllSettings();
-    const messages = sessionModel.returnSessionAndDelete(req, 'updateSettings');
 
-    res.render('admin/settings/index', {
-        layout: 'admin',
+    res.adminRender('admin/settings/index', {
         allSettings,
-        messages,
         helpers: {
             isChecked: function(value, options) {
                 return value == 1 ? options.fn(this) : options.inverse(this)
@@ -35,19 +29,14 @@ exports.update = async(req, res) => {
 
     const results = await settingsModel.updateSettings(dataToSave);
 
-    req.session.updateSettings = {
-        success: false,
-        message: 'تنظیمات ذخیره نشد!'
-    }
     for (result of results) {
         if (result.result.affectedRows > 0) {
-            req.session.updateSettings = {
-                success: true,
-                message: 'تنظیمات ذخیره شد!'
-            }
+            req.flash('success', ['تنظیمات ذخیره شد!']);
             break;
+        } else {
+            req.flash('errors', ['تنظیمات ذخیره نشد!']);
         }
     }
 
-    sessionModel.saveSessionAndRedirect(req, res, '/admin/settings');
+    return res.redirect('/admin/settings');
 }
