@@ -3,19 +3,9 @@ const sessionHandler = require('@models/sessionHandler');
 const sessionModel = new sessionHandler;
 exports.index = async(req, res) => {
     const allComments = await commentsModel.getAllComments();
-    const changeCommentStatus = sessionModel.returnSessionAndDelete(req, 'changeCommentStatus');
-    let commentStatusMessage;
-    let commentStatusSuccess;
-    if (changeCommentStatus) {
-        commentStatusMessage = changeCommentStatus.message;
-        commentStatusSuccess = changeCommentStatus.success ? 'success' : 'danger';
-    }
 
-    res.render('admin/comments/index', {
-        layout: 'admin',
+    res.adminRender('admin/comments/index', {
         allComments,
-        commentStatusMessage,
-        commentStatusSuccess,
         helpers: {
             checkStatus: function(status, options) {
                 if (status == 0) {
@@ -37,17 +27,11 @@ exports.approveComment = async(req, res) => {
     result = await commentsModel.changeCommentStatus(commentID, 'APPROVED');
 
     if (result) {
-        req.session.changeCommentStatus = {
-            success: true,
-            message: 'دیدگاه با موفقیت تایید شد.'
-        }
+        req.flash('success', ['دیدگاه با موفقیت تایید شد.']);
     } else {
-        req.session.changeCommentStatus = {
-            success: false,
-            message: 'خطایی پیش آمده است. دیدگاه تایید نشد.'
-        }
+        req.flash('errors', ['خطایی پیش آمده است. دیدگاه تایید نشد.']);
     }
-    return sessionModel.saveSessionAndRedirect(req, res, '/admin/comments');
+    return res.redirect('/admin/comments');
 }
 
 exports.rejectComment = async(req, res) => {
@@ -55,17 +39,12 @@ exports.rejectComment = async(req, res) => {
     result = await commentsModel.changeCommentStatus(commentID, 'REJECTED');
 
     if (result) {
-        req.session.changeCommentStatus = {
-            success: true,
-            message: 'وضعیت دیدگاه به رد شده تغییر کرد.'
-        }
+        req.flash('success', ['وضعیت دیدگاه به رد شده تغییر کرد.']);
     } else {
-        req.session.changeCommentStatus = {
-            success: false,
-            message: 'خطایی پیش آمده است. دیدگاه رد نشد.'
-        }
+        req.flash('errors', ['خطایی پیش آمده است. دیدگاه رد نشد.']);
     }
-    return sessionModel.saveSessionAndRedirect(req, res, '/admin/comments');
+
+    res.redirect('/admin/comments');
 }
 
 exports.deleteComment = async(req, res) => {
@@ -73,15 +52,10 @@ exports.deleteComment = async(req, res) => {
     result = await commentsModel.deleteComment(commentID);
 
     if (result) {
-        req.session.changeCommentStatus = {
-            success: true,
-            message: 'دیدگاه با موفقیت حذف شد.'
-        }
+        req.flash('success', ['دیدگاه با موفقیت حذف شد.']);
     } else {
-        req.session.changeCommentStatus = {
-            success: false,
-            message: 'خطایی پیش آمده است. دیدگاه حذف نشد.'
-        }
+        req.flash('errors', ['خطایی پیش آمده است. دیدگاه حذف نشد.']);
     }
-    return sessionModel.saveSessionAndRedirect(req, res, '/admin/comments');
+
+    res.redirect('/admin/comments');
 }
