@@ -1,10 +1,21 @@
 const db = require('@database/mysql');
+const userRoles = require('./userRoles');
 exports.getAllUsersData = async(columns = []) => {
     const sqlColumns = columns.length > 0 ? columns.toString(',') : '*';
     const [result] = await db.query(`
     SELECT ${sqlColumns}
     FROM users
     `);
+    return result;
+}
+
+exports.getAllAuthors = async(columns = []) => {
+    const sqlColumns = columns.length > 0 ? columns.toString(',') : '*';
+    const [result] = await db.query(`
+    SELECT ${sqlColumns}
+    FROM users
+    WHERE role = ? OR role = ?
+    `, [userRoles.ADMIN, userRoles.AUTHOR]);
     return result;
 }
 

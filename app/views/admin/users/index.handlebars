@@ -13,7 +13,8 @@
 <!-- Page Headings End -->
 <div class="col-md-12 mb-30">
   <div class="box">
-    {{#if deleteUserResult}} 
+    <div class="box-head">
+      {{#if deleteUserResult}} 
         <div class="alert alert-{{deleteUserResult.success}}" role="alert">
             <strong>{{deleteUserResult.message}}</strong>
             <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
@@ -31,7 +32,6 @@
             <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
         </div>
     {{/if}}
-    <div class="box-head">
        <h4 class="title">
          <a class="button button-icon-right button-primary text-light" href="./users/create">
          <span><i class="zmdi zmdi-account"></i>کاربر جدید</span>

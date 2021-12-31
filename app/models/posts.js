@@ -27,10 +27,7 @@ exports.create = async(postData) => {
 
 exports.remove = async(postID) => {
     const result = await db.query(`DELETE FROM posts WHERE ID = ?`, [postID]);
-    if (result[0].affectedRows > 0) {
-        return 'success';
-    }
-    return 'failed';
+    return result[0].affectedRows > 0;
 }
 exports.update = async(postID, postData) => {
     const result = await db.query(`UPDATE posts SET ? WHERE ID=?`, [postData, postID]);

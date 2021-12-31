@@ -2,66 +2,28 @@ const postsModel = require('@models/posts');
 const usersModel = require('@models/users');
 const dateService = require('@services/dateService');
 const PostValidator = require('@validators/post');
-const sessionHandler = require('@models/sessionHandler');
 const session = require('express-session');
-const sessionModel = new sessionHandler;
 
 exports.index = async(req, res) => {
-    let errors = [];
-    let success = [];
     const posts = await postsModel.allPosts();
-
-    //Remove post messages injected using session
-    if (req.session.postRemoveError) {
-        const validator = new PostValidator;
-        errors = validator.remove(req);
-        delete req.session.postRemoveError;
-    }
-
-    if (req.session.postRemoveSuccess) {
-        const validator = new PostValidator;
-        success = validator.remove(req);
-        delete req.session.postRemoveSuccess;
-    }
-
-    if (req.session.postCreated) {
-        const validator = new PostValidator;
-        success = validator.create(req.session);
-        delete req.session.postCreated;
-    }
-
-    const updatePostStatus = sessionModel.returnSessionAndDelete(req, 'updatePostStatus');
-    if (updatePostStatus) {
-        success.push(sessionModel.returnSessionAndDelete(req, 'updatePostMessage'));
-    } else {
-        errors.push(sessionModel.returnSessionAndDelete(req, 'updatePostMessage'));
-    }
 
     const localizedData = posts.map((post) => {
         post.created_at_persian = dateService.toPersianDate(post.created_at);
         return post;
     });
-    res.render('admin/posts/index', {
+    res.adminRender('admin/posts/index', {
         layout: 'admin',
         posts: localizedData,
-        errors,
-        success
     });
 }
 
 exports.create = async(req, res) => {
-    const errors = sessionModel.returnSessionAndDelete(req, 'createPostErrors');
-    const hasError = sessionModel.returnSessionAndDelete(req, 'createPostHasError');
-    const retrievedData = sessionModel.returnSessionAndDelete(req, 'retrievedData') || null;
-
-    const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
-
-    res.render('admin/posts/create', { layout: 'admin', authors, errors, hasError, retrievedData });
+    const authors = await usersModel.getAllAuthors(['ID', 'full_name']);
+    res.adminRender('admin/posts/create', { authors, retrievedData: req.session.retrievedData });
 }
 
 exports.store = async(req, res) => {
     const validator = new PostValidator;
-    const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
 
     const postData = {
         title: req.body.title,
@@ -71,19 +33,19 @@ exports.store = async(req, res) => {
         status: req.body.status,
     }
 
-    const errors = validator.create(postData);
+    const errors = await validator.create(postData);
+
     if (errors.length > 0) {
-        req.session.createPostErrors = errors;
-        req.session.createPostHasError = true;
+        req.flash('errors', errors);
         req.session.retrievedData = postData;
 
-        return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts/create');
+        res.redirect('/admin/posts/create');
     } else {
         const insertId = await postsModel.create(postData);
         if (insertId) {
-            req.session.postCreated = true;
+            req.flash('success', ['مطلب جدید با موفقیت ایجاد شد.']);
 
-            return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
+            res.redirect('/admin/posts');
         }
     }
 }
@@ -92,25 +54,21 @@ exports.remove = async(req, res) => {
     const postID = req.params.postID;
     const success = await postsModel.remove(postID);
 
-    if (success === 'success') {
-        req.session.postRemoveSuccess = true;
-        req.session.postRemoveError = false;
-    }
-    if (success === 'failed') {
-        req.session.postRemoveSuccess = false;
-        req.session.postRemoveError = true;
+    if (success) {
+        req.flash('success', [`مطلب شماره ${postID} با موفقیت حذف شد`]);
+    } else {
+        req.flash('errors', ['مشکلی پیش آمده است. مطلب مورد نظر حذف نشد.']);
     }
 
-    return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
+    res.redirect('/admin/posts');
 }
 
 exports.edit = async(req, res) => {
     const postID = req.params.postID;
     const postData = await postsModel.getPost(postID);
-    const authors = await usersModel.getAllUsersData(['ID', 'full_name']);
+    const authors = await usersModel.getAllAuthors(['ID', 'full_name']);
 
-    res.render('admin/posts/edit', {
-        layout: 'admin',
+    res.adminRender('admin/posts/edit', {
         authors,
         postData,
         helpers: {
@@ -124,6 +82,7 @@ exports.edit = async(req, res) => {
     });
 }
 exports.update = async(req, res) => {
+    const validator = new PostValidator;
     const postID = req.params.postID;
     const postData = {
         title: req.body.title,
@@ -133,14 +92,19 @@ exports.update = async(req, res) => {
         status: req.body.status,
     }
 
-    const updateResult = postsModel.update(postID, postData);
-    if (updateResult) {
-        req.session.updatePostMessage = 'مطلب مورد نظر با موفقیت ویرایش شد.';
-        req.session.updatePostStatus = true;
-    } else {
-        req.session.updatePostMessage = 'خطایی رخ داده است. مطلب مورد نظر ویرایش نشد.';
-        req.session.updatePostStatus = false;
+    const errors = await validator.create(postData);
+
+    if (errors.length > 0) {
+        req.flash('errors', errors);
+        return res.redirect(`/admin/posts/edit/${postID}`);
     }
 
-    return sessionModel.saveSessionAndRedirect(req, res, '/admin/posts');
+    const updateResult = postsModel.update(postID, postData);
+    if (updateResult) {
+        req.flash('success', ['مطلب با موفقیت ویرایش شد']);
+    } else {
+        req.flash('errors', ['مشکلی پیش آمده است. مطلب شما ویرایش نشد.']);
+    }
+
+    res.redirect('/admin/posts');
 }

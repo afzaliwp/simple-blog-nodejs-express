@@ -1,11 +1,14 @@
+const usersModel = require('@models/users');
 class Post {
-    create(request) {
-        //success
-        if (request.postCreated) {
-            const success = ['مطلب با موفقیت ایجاد شد.'];
-            return success;
-        }
-
+    async create(request) {
+        const authors = await usersModel.getAllAuthors(['ID']);
+        const authorIDs = [];
+        authors.forEach(author => {
+            authorIDs.push(`${author.ID}`)
+        });
+        console.log(authorIDs);
+        console.log(request.author_id);
+        console.log(authorIDs.includes(request.author_id));
         //errors
         const errors = [];
         if (request.title === '') {
@@ -16,6 +19,12 @@ class Post {
         }
         if (request.content === '') {
             errors.push('محتوا نمیتواند خالی باشد!');
+        }
+        if (!authorIDs.includes(request.author_id)) {
+            errors.push('یک نویسنده انتخاب کنید!');
+        }
+        if (!request.status) {
+            errors.push('یک وضعیت انتخاب کنید!');
         }
         return errors;
     }

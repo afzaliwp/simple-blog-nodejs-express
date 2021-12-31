@@ -1,6 +1,4 @@
 const commentsModel = require('@models/comments');
-const sessionHandler = require('@models/sessionHandler');
-const sessionModel = new sessionHandler;
 exports.index = async(req, res) => {
     const allComments = await commentsModel.getAllComments();
 
