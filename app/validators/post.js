@@ -6,9 +6,7 @@ class Post {
         authors.forEach(author => {
             authorIDs.push(`${author.ID}`)
         });
-        console.log(authorIDs);
-        console.log(request.author_id);
-        console.log(authorIDs.includes(request.author_id));
+
         //errors
         const errors = [];
         if (request.title === '') {

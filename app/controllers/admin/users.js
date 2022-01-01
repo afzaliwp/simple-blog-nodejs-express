@@ -14,17 +14,6 @@ exports.index = async(req, res) => {
         return user;
     });
 
-    // let deleteUserResult;
-    // if (req.session.deleteUser) {
-    //     deleteUserResult = sessionModel.returnSessionAndDelete(req, 'deleteUser');
-    // }
-    // if (req.session.userUpdateSuccess) {
-    //     updateSuccess = sessionModel.returnSessionAndDelete(req, 'userUpdateSuccess');
-    // }
-
-    // if (req.session.createUserSuccess) {
-    //     createUserSuccess = sessionModel.returnSessionAndDelete(req, 'createUserSuccess');
-    // }
     res.adminRender('admin/users/index', {
         allUsers: presentedUsersData,
         helpers: {
