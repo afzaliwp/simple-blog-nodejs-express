@@ -6,8 +6,6 @@ const session = require('express-session');
 const hashService = require('@services/hashService');
 
 exports.index = async(req, res) => {
-    let updateSuccess;
-    let createUserSuccess;
     const allUsers = await usersModel.getAllUsersData();
     const presentedUsersData = allUsers.map((user) => {
         user.persian_created_at = dateService.toPersianDate(user.created_at);
@@ -60,8 +58,7 @@ exports.edit = async(req, res) => {
     });
 }
 
-exports.update = (req, res) => {
-    const validator = new userValidator;
+exports.update = async(req, res) => {
     const userID = req.params.userID;
     const userData = {
         role: req.body.role,
@@ -73,10 +70,10 @@ exports.update = (req, res) => {
         userData.password = hashService.hashPassword(req.body.password);
     }
 
-    const errors = validator.create(userData);
+    const validationResult = await userValidator.update(userData);
 
-    if (errors.length > 0) {
-        req.flash('errors', errors);
+    if (validationResult.errors.length > 0) {
+        req.flash('errors', validationResult.errors);
         return res.redirect(`/admin/users/edit/${userID}`);
     }
 
@@ -86,7 +83,7 @@ exports.update = (req, res) => {
         return res.redirect(`/admin/users/edit/${userID}`);
     }
 
-    req.flash('success', ['اطلاعات کاربر با موفقیت ویرایش شد.']);
+    req.flash('success', validationResult.success);
     res.redirect('/admin/users');
     return true;
 
@@ -97,7 +94,7 @@ exports.create = async(req, res) => {
         retrievedData: req.session.retrievedData,
         helpers: {
             roleHasSet: function(data, options) {
-                if (retrievedData) {
+                if (this.retrievedData) {
                     return data == retrievedData.role ? options.fn(this) : options.inverse(this);
                 }
             }

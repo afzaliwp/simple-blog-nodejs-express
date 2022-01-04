@@ -5,7 +5,9 @@ module.exports = app => {
         const success = req.flash('success');
         res.adminRender = (template, options) => {
             const currentUser = req.session.user;
-            currentUser.avatar = userService.getAvatar(currentUser.email, { s: 90 });
+            if (currentUser) {
+                currentUser.avatar = userService.getAvatar(currentUser.email, { s: 90 });
+            }
 
             options = {...options, layout: 'admin', errors, success, currentUser };
             res.render(template, options);
