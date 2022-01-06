@@ -111,21 +111,46 @@
                     </div>
                 </div>
 
-                <div class="col-xlg-6 col-md-6 col-12 mb-30">
+                <div class="col-xlg-6 col-md-6 col-12 mb-30" id="draftForm">
                     <div class="top-report m-0 p-0">
                         <div class="px-4 py-4">
                             <div class="head">
                                 <h4>پیش نویس سریع</h4>
                             </div>
+                            {{#if success}}
+                            <div class="alert alert-success" role="alert">
+                                <strong>{{success}}</strong>
+                                <button class="close" data-dismiss="alert">
+                                    <i class="zmdi zmdi-close"></i>
+                                </button>
+                            </div>
+                            {{/if}}
+                            {{#if errors}}
+                            {{#each errors}}
+                            <div class="alert alert-danger" role="alert">
+                                <strong>{{this}}</strong>
+                                <button class="close" data-dismiss="alert">
+                                    <i class="zmdi zmdi-close"></i>
+                                </button>
+                            </div>
+                            {{/each}}
+                            {{/if}}
                         </div>
                         <div class="col-12 mb-30">
                             <div class="row mbn-15">
-                                <form action="" method="post" class="form-horizontal w-100">
-                                    <div class="col-12 mb-15"><input type="text" class="form-control" placeholder="عنوان"></div>
-                                    <div class="col-12 mb-15"><textarea class="form-control" placeholder="محتوای مطلب"></textarea></div>
+                                <form action="/admin/dashboard/create-draft-post"
+                                      method="post" class="form-horizontal w-100">
+                                    <div class="col-12 mb-15">
+                                        <input name="title" type="text" class="form-control" placeholder="عنوان">
+                                    </div>
+                                    <div class="col-12 mb-15">
+                                        <textarea name="content" class="form-control" placeholder="محتوای مطلب"></textarea>
+                                    </div>
 
-                                    <button class="button button-success m-3"><i class="zmdi zmdi-check"></i><span>ذخیره پیش‌نویس</span></button>
-
+                                    <button type="submit" class="button button-primary m-3">
+                                        <i class="zmdi zmdi-check"></i>
+                                        <span>ذخیره پیش‌نویس</span>
+                                    </button>
                                 </form>
                             </div>
 

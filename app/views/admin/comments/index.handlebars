@@ -22,10 +22,12 @@
         </div>
     {{/if}}
     {{#if errors}}
+    {{#each errors}}
         <div class="alert alert-danger" role="alert">
-            <strong>{{errors}}</strong>
+            <strong>{{this}}</strong>
             <button class="close" data-dismiss="alert"><i class="zmdi zmdi-close"></i></button>
         </div>
+        {{/each}}
     {{/if}}
 
       <div class="table-responsive">
