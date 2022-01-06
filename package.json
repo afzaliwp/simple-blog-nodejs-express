@@ -22,11 +22,11 @@
         "express-mysql-session": "^2.1.7",
         "express-session": "^1.17.2",
         "gravatar": "^1.8.2",
+        "ioredis": "^4.28.2",
         "jalali-moment": "^3.3.10",
         "module-alias": "^2.2.2",
         "mysql2": "^2.3.3",
         "path": "^0.12.7",
-        "redis": "^4.0.1",
         "req-flash": "^0.0.3"
     },
     "devDependencies": {

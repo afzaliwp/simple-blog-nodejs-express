@@ -1,7 +1,6 @@
-let redis = require('redis');
+let redis = require('ioredis');
 module.exports = (session) => {
     let RedisStore = require('connect-redis')(session);
     let redisClient = redis.createClient();
-
     return new RedisStore({ client: redisClient });
 }
