@@ -22,7 +22,7 @@ exports.getSetting = async(settingName) => {
     WHERE setting_name = '${settingName}'
     LIMIT 1
     `);
-    return result[0];
+    return result[0].value;
 }
 
 exports.updateSetting = async(data) => {

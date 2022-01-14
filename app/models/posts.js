@@ -10,14 +10,22 @@ exports.getPost = async(postID) => {
     return result[0];
 }
 
-exports.allPosts = async() => {
+exports.allPosts = async(page = 1, perPage = 1) => {
+    const offset = (page - 1) * perPage;
     const [result] = await db.query(`
     SELECT p.*, u.full_name 
     FROM posts p
     JOIN users u ON p.author_id = u.ID
     ORDER BY ID DESC
+    LIMIT ${offset}, ${perPage}
     `);
     return result;
+}
+
+exports.countAllPosts = async() => {
+    const [result] = await db.query(`SELECT COUNT(ID) as postsCount FROM posts`);
+
+    return result[0].postsCount;
 }
 
 exports.create = async(postData) => {
