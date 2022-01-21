@@ -9,7 +9,7 @@ exports.showPost = async(req, res) => {
             ...post,
             persian_created_at: dateService.toPersianDate(post.created_at)
         }
-        return res.frontRender('front/post', { post: localizedData });
+        return res.frontRender('front/post', { post: localizedData, bodyClass: 'single-post bg-gray' });
     } else {
         return res.redirect('/404');
     }

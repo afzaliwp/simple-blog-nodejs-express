@@ -5,7 +5,7 @@ module.exports = app => {
         const success = req.flash('success');
 
         res.frontRender = (template, options) => {
-            options = {...options, layout: 'front' };
+            options = { layout: 'front', bodyClass: 'bg-gray', ...options };
             res.render(template, options);
         }
 
