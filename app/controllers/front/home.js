@@ -15,7 +15,6 @@ exports.index = async(req, res) => {
         isNextPageDisabled: currentPage == totalPages ? 'disabled' : '',
         isPrevPageDisabled: currentPage == 1 ? 'disabled' : ''
     }
-    console.log(currentPage < pagination.totalPages, pagination.totalPages);
 
     const presentedPosts = posts.map((post) => {
         post.excerpt = post.content.substr(0, 100);
