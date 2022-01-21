@@ -1,6 +1,7 @@
 const postsModel = require('@models/posts');
 const settingsModel = require('@models/settings');
 const dateService = require('@services/dateService');
+
 exports.index = async(req, res) => {
     const currentPage = 'page' in req.query ? parseInt(req.query.page) : 1;
     const perPage = await settingsModel.getSetting('post_per_page');
@@ -22,4 +23,8 @@ exports.index = async(req, res) => {
         return post;
     });
     res.frontRender('front/home', { posts: presentedPosts, pagination });
+}
+
+exports.notFound = async(req, res) => {
+    res.frontRender('front/404');
 }

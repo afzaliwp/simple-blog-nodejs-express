@@ -9,7 +9,16 @@ exports.getPost = async(postID) => {
     `, [postID]);
     return result[0];
 }
-
+exports.getPostBySlug = async(postSlug) => {
+    const [result] = await db.query(`
+    SELECT p.*, u.full_name 
+    FROM posts p
+    JOIN users u ON p.author_id = u.ID
+    WHERE p.slug=?
+    LIMIT 1
+    `, [postSlug]);
+    return result[0];
+}
 exports.allPosts = async(page = 1, perPage = 1) => {
     const offset = (page - 1) * perPage;
     const [result] = await db.query(`
