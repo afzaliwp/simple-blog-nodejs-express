@@ -20,6 +20,11 @@ exports.getAllComments = async() => {
     return localizedDate;
 }
 
+exports.createComment = async(commentData) => {
+    const [result] = await db.query(`INSERT INTO comments SET ?`, [commentData]);
+    return result;
+}
+
 exports.getLatestComments = async(numberComments = 3) => {
     const [result] = await db.query(`
     SELECT c.*, p.title, p.slug

@@ -84,28 +84,44 @@
                     <h3 class="comment-reply-title mb-lg-5 mb-4">
                         پیام بگذارید
                     </h3>
-                    <form role="form" class="comment-form">
+                     {{#if success}}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{success}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    </div>
+                    {{/if}}
+                    <form role="form" class="comment-form" action="/p/{{post.slug}}/comments" method="POST">
                         <div class="row">
-                            <div class=" col-md-4">
+                        {{#if user}}
+                        <div class="col-12">
+                        <p>شما با عنوان {{user.full_name}} وارد شده اید.</p>
+                        </div>
+                        {{/if}}
+
+                        {{#unless user}}
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="نام*" required="">
+                                    <input type="text" name="name" class="form-control" placeholder="نام*" required="">
                                 </div>
                             </div>
-                            <div class=" col-md-4">
+                            <div class="col-md-4">
                                 <div class="form-group ">
-                                    <input type="email" class="form-control" placeholder="ایمیل*" required="">
+                                    <input type="email" name="email" class="form-control" placeholder="ایمیل*" required="">
                                 </div>
                             </div>
-                            <div class=" col-md-4">
-                                <div class="form-group ">
-                                    <input type="text" class="form-control" placeholder="وب سایت" required="">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" name="url" class="form-control" placeholder="وب سایت">
                                 </div>
                             </div>
+                        {{/unless}}
                         </div>
 
                         <div class="form-group">
                             <div class="controls">
-                                <textarea id="message" rows="5" placeholder="نظر*" class="form-control" required=""></textarea>
+                                <textarea id="message" name="content" rows="5" placeholder="نظر*" class="form-control" required=""></textarea>
                             </div>
                         </div>
                         <p class="text-muted">آدرس ایمیل شما منتشر نخواهد شد. فیلدهای مورد نیاز علامت گذاری شده اند *</p>

@@ -9,7 +9,8 @@ exports.showPost = async(req, res) => {
             ...post,
             persian_created_at: dateService.toPersianDate(post.created_at)
         }
-        return res.frontRender('front/post', { post: localizedData, bodyClass: 'single-post bg-gray' });
+        const isUserLoggedIn = 'user' in req.session ? req.session.user : false;
+        return res.frontRender('front/post', { post: localizedData, bodyClass: 'single-post bg-gray', user: isUserLoggedIn });
     } else {
         return res.redirect('/404');
     }
