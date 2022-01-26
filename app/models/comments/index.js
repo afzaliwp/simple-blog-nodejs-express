@@ -47,3 +47,14 @@ exports.deleteComment = async(commentID) => {
     [result] = await db.query(`DELETE FROM comments WHERE ID=?`, commentID);
     return result.affectedRows > 0;
 }
+
+exports.getPostComments = async(postID, status = commentStatus.APPROVED) => {
+    const [rows] = await db.query(`
+    SELECT *
+    FROM comments
+    WHERE post_id = ?
+    AND status = ?
+    `, [postID, status]);
+
+    return rows;
+}

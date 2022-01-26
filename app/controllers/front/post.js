@@ -1,5 +1,8 @@
 const postsModel = require('@models/posts');
+const commentsModel = require('@models/comments');
+const userService = require('@services/userService');
 const dateService = require('@services/dateService');
+const _ = require('lodash');
 
 exports.showPost = async(req, res) => {
     const postSlug = req.params.postSlug;
@@ -9,8 +12,28 @@ exports.showPost = async(req, res) => {
             ...post,
             persian_created_at: dateService.toPersianDate(post.created_at)
         }
+        const comments = await commentsModel.getPostComments(post.ID);
+        const presentedComments = comments.map((comment) => {
+            comment.persian_created_at = dateService.toPersianDate(comment.created_at);
+            comment.avatar = userService.getAvatar(comment.email);
+            return comment;
+        });
+        const groupedComments = _.groupBy(presentedComments, 'parent');
         const isUserLoggedIn = 'user' in req.session ? req.session.user : false;
-        return res.frontRender('front/post', { post: localizedData, bodyClass: 'single-post bg-gray', user: isUserLoggedIn });
+        return res.frontRender('front/post', {
+            post: localizedData,
+            comments: groupedComments[0],
+            bodyClass: 'single-post bg-gray',
+            user: isUserLoggedIn,
+            helpers: {
+                commentHasChildren: function(commentID, options) {
+                    return commentID in groupedComments;
+                },
+                getCommentChildren: function(commentID, options) {
+                    return groupedComments[commentID];
+                }
+            }
+        });
     } else {
         return res.redirect('/404');
     }

@@ -24,7 +24,6 @@ exports.store = async(req, res) => {
     commentData.content = formData.content;
 
     const result = await commentsModel.createComment(commentData);
-    console.log(result);
     if (result) {
         req.flash('success', 'دیدگاه شما با موفقیت برای تایید مدیر ارسال شد.');
         return res.redirect(`/p/${postSlug}`);

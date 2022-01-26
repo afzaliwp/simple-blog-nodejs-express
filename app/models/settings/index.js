@@ -5,14 +5,12 @@ exports.getAllSettings = async() => {
     let data;
     for (setting of defaults) {
         data = await this.getSetting(setting.setting_name);
-        console.log(data);
         if (!data) {
             results[setting.setting_name] = setting.setting_value
         } else {
             results[setting.setting_name] = data;
         }
     }
-    console.log(results);
     return results;
 }
 
