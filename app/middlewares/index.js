@@ -8,6 +8,7 @@ module.exports = app => {
 
         const websiteTitle = await settingsModel.getSetting('website_title');
         const websiteDescription = await settingsModel.getSetting('website_description');
+
         res.frontRender = (template, options) => {
             options = {
                 layout: 'front',
