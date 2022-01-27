@@ -1,11 +1,23 @@
 const userService = require('@services/userService');
+const settingsModel = require('@models/settings');
+
 module.exports = app => {
-    app.use((req, res, next) => {
+    app.use(async(req, res, next) => {
         const errors = req.flash('errors');
         const success = req.flash('success');
 
+        const websiteTitle = await settingsModel.getSetting('website_title');
+        const websiteDescription = await settingsModel.getSetting('website_description');
         res.frontRender = (template, options) => {
-            options = { layout: 'front', bodyClass: 'bg-gray', errors, success, ...options };
+            options = {
+                layout: 'front',
+                bodyClass: 'bg-gray',
+                websiteTitle,
+                websiteDescription,
+                errors,
+                success,
+                ...options
+            };
             res.render(template, options);
         }
 

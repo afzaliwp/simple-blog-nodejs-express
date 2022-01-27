@@ -2,6 +2,7 @@ const postsModel = require('@models/posts');
 const commentsModel = require('@models/comments');
 const userService = require('@services/userService');
 const dateService = require('@services/dateService');
+const settingsModel = require('@models/settings');
 const _ = require('lodash');
 
 exports.showPost = async(req, res) => {
@@ -20,8 +21,14 @@ exports.showPost = async(req, res) => {
         });
         const groupedComments = _.groupBy(presentedComments, 'parent');
         const isUserLoggedIn = 'user' in req.session ? req.session.user : false;
+
+        const websiteTitle = await settingsModel.getSetting('website_title');
+        const enableComments = await settingsModel.getSetting('enable_comments');
+
         return res.frontRender('front/post', {
+            websiteTitle: `${websiteTitle} -- ${post.title}`,
             post: localizedData,
+            enabledComments: enableComments > 0,
             comments: groupedComments[0],
             bodyClass: 'single-post bg-gray',
             user: isUserLoggedIn,
