@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html class="no-js" lang="fa">
   <head>
     <meta charset="utf-8" />
@@ -220,6 +221,16 @@
     <script src="/static/assets/js/vendor/bootstrap.min.js"></script>
     <!--Plugins JS-->
     <script src="/static/assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="/static/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script>
+      tinymce.init({
+        language: 'fa',
+        selector: '#content',
+        skin: 'oxide-dark',
+        height: 400,
+        image_caption: true,
+      });
+    </script>
     <!--Main JS-->
     <script src="/static/assets/js/main.js"></script>
 
