@@ -1,11 +1,11 @@
 const postsModel = require('@models/posts');
 const usersModel = require('@models/users');
 const dateService = require('@services/dateService');
+const uploadService = require('@services/uploadService');
 const PostValidator = require('@validators/post');
-const session = require('express-session');
 
 exports.index = async(req, res) => {
-    const posts = await postsModel.allPosts();
+    const posts = await postsModel.getAllPosts();
 
     const localizedData = posts.map((post) => {
         post.created_at_persian = dateService.toPersianDate(post.created_at);
@@ -32,6 +32,12 @@ exports.store = async(req, res) => {
         author_id: req.body.author_id,
         status: req.body.status,
     }
+    const files = req.files;
+    if (files) {
+        const fileExtention = files.thumbnail.name.split('.').pop();
+        const newName = files.thumbnail.md5;
+        postData.thumbnail = `${newName}.${fileExtention}`;
+    }
 
     const errors = await validator.create(postData);
 
@@ -43,6 +49,9 @@ exports.store = async(req, res) => {
     } else {
         const insertId = await postsModel.create(postData);
         if (insertId) {
+            if (files) {
+                uploadService.uploadPostThumbnail(files.thumbnail);
+            }
             req.flash('success', ['مطلب جدید با موفقیت ایجاد شد.']);
 
             res.redirect('/admin/posts');
@@ -81,15 +90,24 @@ exports.edit = async(req, res) => {
         }
     });
 }
+
 exports.update = async(req, res) => {
     const validator = new PostValidator;
+
     const postID = req.params.postID;
+
     const postData = {
         title: req.body.title,
         slug: req.body.slug,
         content: req.body.content,
         author_id: req.body.author_id,
-        status: req.body.status,
+        status: req.body.status
+    }
+    const files = req.files;
+    if (files) {
+        const fileExtention = files.thumbnail.name.split('.').pop();
+        const newName = files.thumbnail.md5;
+        postData.thumbnail = `${newName}.${fileExtention}`;
     }
 
     const errors = await validator.create(postData);
@@ -99,8 +117,12 @@ exports.update = async(req, res) => {
         return res.redirect(`/admin/posts/edit/${postID}`);
     }
 
-    const updateResult = postsModel.update(postID, postData);
+    const updateResult = await postsModel.update(postID, postData);
     if (updateResult) {
+        if (files) {
+            uploadService.uploadPostThumbnail(files.thumbnail);
+        }
+
         req.flash('success', ['مطلب با موفقیت ویرایش شد']);
     } else {
         req.flash('errors', ['مشکلی پیش آمده است. مطلب شما ویرایش نشد.']);

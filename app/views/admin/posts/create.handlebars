@@ -21,7 +21,7 @@
                         {{/each}}
                     </div>
                     {{/if}}
-                        <form action="/admin/posts/store" method="post" class="form-horizontal w-100">
+                        <form action="/admin/posts/store" method="post" class="form-horizontal w-100" enctype="multipart/form-data">
                             <div class="col-12 mb-30">
                                 <label for="title">عنوان مطلب</label>
                                 <input id="title" name="title" type="text" 
@@ -53,7 +53,10 @@
                                     {{/each}}
                                 </select>
                             </div>
-
+                            <div class="col-12 mb-30">
+                                <h6 class="mb-15">تصویر شاخص</h6>
+                                <input type="file" class="form-control" name="thumbnail">
+                            </div>
                             <div class="col-12 mb-30">
                                 <h5>وضعیت مطلب</h5>
                                 <div class="d-flex flex-column">

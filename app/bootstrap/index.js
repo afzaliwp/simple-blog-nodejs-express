@@ -3,6 +3,7 @@ const hbs = require('express-handlebars');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 let sessionStore = require('./session-handler/redis')(session);
 
 module.exports = app => {
@@ -12,6 +13,13 @@ module.exports = app => {
     app.set('view engine', 'handlebars');
     app.set('views', path.join(__dirname, '../views'));
     app.use('/static', express.static(path.join(__dirname, '../../public')));
+
+    app.use(fileUpload({
+        createParentPath: true,
+        useTempFiles: true,
+        tempFileDir: '/tmp/'
+    }));
+
     app.use(session({
         store: sessionStore,
         saveUninitialized: false,

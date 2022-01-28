@@ -31,6 +31,16 @@ exports.allPosts = async(page = 1, perPage = 1) => {
     return result;
 }
 
+exports.getAllPosts = async() => {
+    const [result] = await db.query(`
+    SELECT p.*, u.full_name 
+    FROM posts p
+    JOIN users u ON p.author_id = u.ID
+    ORDER BY ID DESC
+    `);
+    return result;
+}
+
 exports.countAllPosts = async() => {
     const [result] = await db.query(`SELECT COUNT(ID) as postsCount FROM posts`);
 
@@ -48,9 +58,5 @@ exports.remove = async(postID) => {
 }
 exports.update = async(postID, postData) => {
     const result = await db.query(`UPDATE posts SET ? WHERE ID=?`, [postData, postID]);
-    return result;
-    if (result[0].affectedRows > 0) {
-        return 'success';
-    }
-    return 'failed';
+    return result[0].affectedRows > 0;
 }
