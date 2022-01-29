@@ -25,6 +25,17 @@ exports.index = async(req, res) => {
     res.frontRender('front/home', { posts: presentedPosts, pagination });
 }
 
+exports.search = async(req, res) => {
+    const posts = await postsModel.getAllPostsByKeyword(req.query.keyword);
+    const presentedPosts = posts.map((post) => {
+        post.excerpt = post.content.substr(0, 100);
+        post.persian_date = dateService.toPersianDate(post.created_at);
+        return post;
+    });
+
+    res.frontRender('front/search', { posts: presentedPosts });
+}
+
 exports.notFound = async(req, res) => {
     res.frontRender('front/404');
 }

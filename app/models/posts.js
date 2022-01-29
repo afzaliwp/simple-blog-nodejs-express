@@ -41,6 +41,17 @@ exports.getAllPosts = async() => {
     return result;
 }
 
+exports.getAllPostsByKeyword = async(keyword) => {
+    const [result] = await db.query(`
+    SELECT p.*, u.full_name 
+    FROM posts p
+    JOIN users u ON p.author_id = u.ID
+    WHERE title LIKE ?
+    ORDER BY ID DESC
+    `, ['%' + keyword + '%']);
+    return result;
+}
+
 exports.countAllPosts = async() => {
     const [result] = await db.query(`SELECT COUNT(ID) as postsCount FROM posts`);
 
